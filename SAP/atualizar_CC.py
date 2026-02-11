@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import os
 import pandas as pd
 
-df = pd.read_excel("/home/fernandoaraujo_logg/Desenvolvimentos/SAP/AlteraCentroCusto.xlsx")
+df = pd.read_excel("/home/fernando-araujo/Documentos/Desenvolvimentos/SAP/base_centrodecusto_datastudio.xlsx", dtype=str, sheet_name="script")
 
 filiais = ["L", "T", "X"]
 
@@ -23,12 +23,13 @@ password = os.getenv("API_PASSWORD")
 # Iterar pelas linhas do DataFrame
 for index, row in df.iterrows():
 
-    numero = str(row[0])  # Ajuste conforme a coluna que contém o valor desejado
+    numero = str(row["CÓDIGO"])  # Ajuste conforme a coluna que contém o valor desejado
 
     # Pegando os outros parâmetros (supondo que estão nas colunas 1, 2 e 3)
-    param2 = row[1]  # Coluna 1: Param2
-    param3 = row[2]  # Coluna 2: Param3
-    param4 = row[3]  # Coluna 3: Param4
+    param2 = row["1º APROVADOR"]  # Coluna 1: Param2
+    param3 = row["2ª APROVADOR"]  # Coluna 2: Param3
+    param4 = row["3ª APROVADOR"]  # Coluna 3: Param4
+    param5 = row["4ª APROVADOR"]  # Coluna 4: Param5
 
     # Gerar os valores combinados (exemplo: L50150, T50150, X50150)
     for filial in filiais:
@@ -41,7 +42,7 @@ for index, row in df.iterrows():
             "IV_APROVADOR_NV1": param2,
             "IV_APROVADOR_NV2": param3,
             "IV_APROVADOR_NV3": param4,
-            "IV_APROVADOR_NV4": "" #Paramêtro não obrigatório.
+            "IV_APROVADOR_NV4": param5 #Paramêtro não obrigatório.
         }
 
         # Enviando a requisição POST
@@ -54,4 +55,5 @@ for index, row in df.iterrows():
         # Exibindo o resultado
         print("Status Code:", response.status_code)
         print("Resposta da API:", response.text)
+        print(payload)
         slp(5)

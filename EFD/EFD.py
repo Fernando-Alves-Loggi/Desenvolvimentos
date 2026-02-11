@@ -1,14 +1,64 @@
 import io
 
-# Inicializa uma lista para armazenar as linhas filtradas
-linhas_filtradas = []
+caminho_arquivo = '/home/fernando-araujo/Documentos/Desenvolvimentos/EFD/12.2025 SPED SC 88.txt'
 
-# Lê o arquivo e filtra as linhas ao mesmo tempo
-with io.open('EFD L4B 05_2022_14_09_2024v9.txt', 'r', encoding='ISO-8859-1') as file:
-    for linha in file:
-        if linha.startswith('|F100|'):
-            linhas_filtradas.append(linha.strip())  # Adiciona a linha filtrada, removendo espaços em branco
+with io.open(caminho_arquivo, 'r', encoding='ISO-8859-1') as file:
+    linhas = list(file)
 
-# Exibe as linhas filtradas
-for linha in linhas_filtradas:
-    print(linha)
+d100_atual = None
+d100_com_problema = []
+
+for i in range(len(linhas)):
+    partes = linhas[i].split('|')
+    if len(partes) < 2:
+        continue
+
+    registro = partes[1].strip()
+
+    # Captura D100 completo
+    if registro == 'D100':
+        d100_atual = linhas[i].rstrip()  # mantém a linha inteira
+
+    # Captura D190 dentro do D100
+    elif registro == 'D190' and d100_atual:
+        pares_completos = 0
+        esperando_D197 = False
+        encontrou_d195_ou_d197 = False
+        j = i + 1
+
+        while j < len(linhas):
+            partes_j = linhas[j].split('|')
+            if len(partes_j) < 2:
+                j += 1
+                continue
+
+            reg_j = partes_j[1].strip()
+
+            # Fim do D190
+            if reg_j in ('D190', 'D100'):
+                break
+
+            if reg_j == 'D195':
+                encontrou_d195_ou_d197 = True
+                if esperando_D197:
+                    # Encontrou D195 sem fechar par anterior
+                    esperando_D197 = True
+                else:
+                    esperando_D197 = True
+
+            elif reg_j == 'D197':
+                encontrou_d195_ou_d197 = True
+                if esperando_D197:
+                    pares_completos += 1
+                    esperando_D197 = False
+
+            j += 1
+
+        # REGRA FINAL: pelo menos 1 D195/D197 e pares < 3
+        if encontrou_d195_ou_d197 and pares_completos < 3:
+            d100_com_problema.append(d100_atual)
+
+# OUTPUT FINAL
+print('D100 com problema (faltando par(es) D195→D197):')
+for d100 in d100_com_problema:
+    print(d100)
