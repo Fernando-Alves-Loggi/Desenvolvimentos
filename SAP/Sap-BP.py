@@ -6,7 +6,7 @@ import os
 import pandas as pd
 
 #Ler planilha
-df = pd.read_excel("/home/fernando-araujo/Documentos/Desenvolvimentos/SAP/base_cadastros.xlsx", dtype=str)
+df = pd.read_excel("/home/fernando-araujo/Documentos/Desenvolvimentos/SAP/Cadastro de Clientes Loggi Fácil 13_02_2026.xlsx", dtype=str)
 
 #Carregar variáveis de ambiente
 load_dotenv()
@@ -122,8 +122,8 @@ for index, row in df.iterrows():
         "to_BusinessPartnerBank": [
           {
             "BankCountryKey": "BR",
-            "BankNumber": row["CODIGO BANCO"],
-            "bank_agency": row["AGENCIA"],
+            "BankNumber": row["AGENCIA"],
+            "bank_agency": "",
             "BankAccount": row["CONTA"],
             "BankControlKey": row["DIGITO CONTA"],
             "BankAccountName": row["NOME DO BANCO"]
@@ -233,8 +233,8 @@ for index, row in df.iterrows():
       "to_BusinessPartnerBank": [
         {
           "BankCountryKey": "BR",
-          "BankNumber": row["CODIGO BANCO"],
-          "bank_agency": row["AGENCIA"],
+          "BankNumber": row["AGENCIA"],
+          "bank_agency": "",
           "BankAccount": row["CONTA"],
           "BankControlKey": row["DIGITO CONTA"],
           "BankAccountName": row["NOME DO BANCO"]
@@ -253,6 +253,6 @@ for index, row in df.iterrows():
   with open("response_log.txt", "a") as log_file:
     log_file.write(f"Resposta da API: {response.text}\n")
 
-  print("Resposta da API:", response.text, response.status_code)
+  print("Resposta da API:", response.text)
 
   slp(1)
