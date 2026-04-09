@@ -12,8 +12,8 @@ df = pd.read_excel("/home/fernando-araujo/Documentos/Desenvolvimentos/SAP/Cadast
 load_dotenv()
 
 #URL da API
-# url = "https://loggi-dev-qa.it-cpi003-rt.cfapps.us10.hana.ondemand.com/http/s4/api/BusinessPartner"
-url = "https://loggi-prod.it-cpi008-rt.cfapps.br10.hana.ondemand.com/http/s4/api/BusinessPartner"
+url = "https://loggi-dev-qa.it-cpi003-rt.cfapps.us10.hana.ondemand.com/http/s4/api/BusinessPartner"
+# url = "https://loggi-prod.it-cpi008-rt.cfapps.br10.hana.ondemand.com/http/s4/api/BusinessPartner"
 
 #Credenciais
 username = os.getenv("API_USERNAME")
